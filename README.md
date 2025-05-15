@@ -9,11 +9,26 @@ SarcDBase/
 |_bin/
 |_annotation_files/
 
+General requirerment before running the tool
 
-1. Create the and set up the envirorment
+Conda
+Python
+
+1. Create and set up the envirorment
+	In the SarcDBase folder run
+
+ conda create -n SarcDBase python=3.9
+ conda activate SarcDBase  
+
+ pip install -r requirements.txt
+
+python app.py 
+	
 
 
-2. Run the set_up.sh script. It creates a subfolder in the results/ directory for each case, named as the case that is reported in the the cohort *_cohort.txt list. It also create a *_case_information.txt file that report the information present the *_cohort.txt, for exaple, sex, age etc... You can add all the information that you want.
+
+
+3. Run the set_up.sh script. It creates a subfolder in the results/ directory for each case, named as the case that is reported in the the cohort *_cohort.txt list. It also create a *_case_information.txt file that report the information present the *_cohort.txt, for exaple, sex, age etc... You can add all the information that you want.
 
 *** VERY IMPORTANT!!! The files that have to be analyzed need to be saved with the same name as present in the list!! ***
 
