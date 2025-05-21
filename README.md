@@ -202,7 +202,10 @@ python path/to/SarcDBase/bin/app.py
 ```
 
 
+## Citation
 
+If you use sarcDBase please cite .... future paper
+and the link for Mitelman
 
 
 
