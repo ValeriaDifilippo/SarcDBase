@@ -1,0 +1,15 @@
+name: SarcDBase
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9           # Specify Python version (adjust as needed)
+  - jupyter
+  - ipykernel
+  - numpy
+  - pandas
+  - plotly
+  - Flask
+  - dash              
+  - dash-ag-grid
+  - pycirclize
+  - matplotlib

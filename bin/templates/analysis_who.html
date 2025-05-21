@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}WHO - MUTATIONS ANALYSIS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>WHO genes</h1>
+    <div class="iframe-container">
+        <iframe src="/analysis_who/" class="dash-iframe" style="border:none; width: 100%; height: 100vh;"></iframe>
+    </div>
+</div>
+{% endblock %}
