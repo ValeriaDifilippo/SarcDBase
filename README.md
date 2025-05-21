@@ -100,6 +100,9 @@ It creates ... It uses as inputs directly the vcf file
 ```
 python3 path/to/SarcDBase/bin/sv.py -file path/to/${sample}.vcf -annotation path/to/SarcDBase/annotation_files/WHO_annotation_list.txt -outfile path/to/SarcDBase/results/${sample}*_sv.txt -filter PASS
 ```
+
+python3 bin/sv.py -file KI/DNA/K65-22/structural_variants/SARC-P-K6522-N-K6522-KH-WG-gridss.svannoated.vcf -annotation annotation_files/WHO_annotation_list_hg19.txt -outfile SARC-P-K6522-N-K6522-KH-WG-gridss.svannoated.txt -filter PASS
+
 **Example for Karim to run**
 
 Usage for KI for loop
@@ -166,60 +169,36 @@ do sample=$(basename "$file" | sed 's/\.txt$//'); echo "copy number plot generat
 
 it ....
 
+Example .txt file format that is handles by the script, you need to extract the first column and formatted in a specific way
+
+| GeneFusion |
+| --- |
+| EWSR1::FLI1 | 
+| FUS::DDIT3 | 
+
 
 ```
 python3 path/to/SarcDBase/bin/funsion.py -file path/to/${sample}.txt -annotation path/to/SarcDBase/annotation_files/mitelman_databse.txt -o path/to/SarcDBase/results/$sample/${sample}_fusion.txt
 ```
-Usage for KI
 
-for file in path/to/RNA_seq/*.txt; 
-	do sample=$(echo $file | cut -d "/" -f9 | sed 's/\.txt$//'); echo "Fusions for $sample, please chill the fuck out"; python path/to/SarcDBase/bin/fusion.py -file $file -annotation path/to/SarcDBase/annotation_files/mitelman_databse.txt -o path/to/SarcDBase/results/$sample/${sample}_fusion.txt; done
+Usage for INFORM 
 
-
-Usage for INFORM
-
-for file in /media/bioinfo/Documents/Valeria/KI_sarcdbase/validation_cohort/RNA_seq/*/fusioninspector/*.tsv; 
-	do sample=$(echo $file | cut -d "/" -f9 | sed 's/^RNA//; s/-T-//'); echo "Fusions for $sample, please chill the fuck out"; awk -F'\t' -v OFS='\t' '{gsub("--", "::", $1); print}' "$file" > /media/bioinfo/Documents/Valeria/KI_sarcdbase/validation_cohort/RNA_seq/fusions/${sample}.txt;done
-
-
-
-
-	### Usage for INFORM ###
-
-	for file in /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/FC/*.txt; 
+for file in path/to/INFORM/FC/*.txt; 
 	do sample=$(basename "$file" | sed 's/.final-list_candidate-fusion-genes\.txt$//'); echo "vcf file for $sample, please chill the fuck out"; python /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/bin/funsion.py -file $file -annotation /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/annotation_files/mitelman_databse.txt -o /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/$sample/${sample}_fusion.txt; done
 
 
 ***Report module***
-	### Usage for KI ### 
+If you wish you can create a report containing all the files generated for a spefic file and save them in a .html file.
 
-    for dir in /media/bioinfo/Documents/Valeria/KI_sarcdbase/results/*/; do sample=$(basename "$dir"); echo "Generating report for $sample, please chill the fuck out"; python /media/bioinfo/INFORM/SarcDBase/bin/report.py -file "$dir" -o "/media/bioinfo/Documents/Valeria/KI_sarcdbase/results/$sample/${sample}_report.html" ; done
-
-
-
-
-
-	### Usage for INFORM ###
-	for file in /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/$sample/; do sample=$(echo $file); echo "Generating report for $sample, please chill the fuck out"; python /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/bin/report.py -file $file -o /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/$sample/r${sample}_report.html; done
-
-for dir in /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/*/; do sample=$(basename "$dir") ; echo "Generating report for $sample, please chill the fuck out" ; python /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/bin/report.py -file "$dir" -o "Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/$sample/${sample}_report.html" ; done
-
-
-
-for dir in /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/*/; do \
-    sample=$(basename "$dir"); \
-    echo "Generating report for $sample, please chill the fuck out"; \
-    python /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/bin/report.py \
-    -file $dir \
-    -o /Users/va6305di/OneDrive\ -\ Lund\ University/Projects/SB_analysis/INFORM/results/$sample/${sample}_report.html; \
-done 
-
+```
+python3 path/to/SarcDBase/bin/report.py -file path/to/${sample}/ -o path/to/SarcDBase/results/$sample/${sample}_report.html
+```
 
 
 **Visualization app**
 
 ```
-python app.py 
+python path/to/SarcDBase/bin/app.py 
 ```
 
 
