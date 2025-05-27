@@ -59,7 +59,7 @@ This directory will contain subdirectories for each analysed case with results g
 ***Set up***
 
 This step creates a subfolder in the results/ directory for each case, named as per the cohort.txt list.
-Create a tab delimtied cohort.txt file according to the following format:
+Create a tab delimtied cohort.txt file according to the following format - only the first column is mandatory, all extra information will show up in the html report run later:
 
 Example of the cohort.txt
 
