@@ -16,7 +16,7 @@ def generate_report(data_folder, output_file):
     sample_name = os.path.basename(os.path.normpath(data_folder))  # Get the folder name as the sample name
     sample_names = {sample_name}
 
-    # Load the content of "About.txt" if it exists
+    # Load the content of "About.txt" if it exists (not used anymore)
     about_file_path = os.path.join(data_folder, "About.txt")
     about_content = ""
     if os.path.exists(about_file_path):
@@ -52,13 +52,12 @@ def generate_report(data_folder, output_file):
             fusion_table_html = df_fusion.to_html(index=False, classes='dataframe')
 
         # Use relative path for image
-        image_html = ""
         if os.path.exists(jpeg_file):
-            image_html = f'<div><h2>Image for {sample}</h2><img src="{os.path.basename(jpeg_file)}" alt="Image for {sample}" width="6%"></div>'
+            image_html = f'<div><h2>Copy number data for Case {sample}</h2><img src="{os.path.basename(jpeg_file)}" alt="Image for {sample}" width="6%"></div>'
         else:
-            image_html = f'<div><h2>No Image Found for {sample}</h2></div>'
+            image_html = f'<div><h2>No Copy Number Data Found for Case {sample}</h2></div>'
 
-        # HTML template with an "About" section at the end
+        # HTML template (About section removed)
         html_content = f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -101,7 +100,6 @@ def generate_report(data_folder, output_file):
                 textarea {{ width: 100%; height: 150px; }}
                 button {{ margin-top: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }}
                 button:hover {{ background-color: #45a049; }}
-                .about-section {{ margin-top: 50px; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; }}
             </style>
         </head>
         <body>
@@ -112,9 +110,8 @@ def generate_report(data_folder, output_file):
                     <a href="#notes">Notes</a>
                     <a href="#sv">Structural Variants (SV)</a>
                     <a href="#snv">Single Nucleotide Variants (SNV)</a>
-                    <a href="#fusion">Fusion Genes</a>
-                    <a href="#image">Image</a>
-                    <a href="#about">About</a>
+                    <a href="#fusion">Fusion Genes (RNA-seq)</a>
+                    <a href="#image">Copy Number Aberrations</a>
                 </div>
 
                 <div class="content">
@@ -137,17 +134,12 @@ def generate_report(data_folder, output_file):
                     </div>
 
                     <div class="section" id="fusion">
-                        <h2>Fusion Genes</h2>
+                        <h2>Fusion Genes (RNA-seq)</h2>
                         {fusion_table_html}
                     </div>
 
                     <div class="section" id="image">
                         {image_html}
-                     </div>
-                     
-                    <div class="section" id="about">
-                        <h2>About the report</h2>
-                        {info_table_html}
                     </div>
                 </div>
             </div>
@@ -177,4 +169,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
