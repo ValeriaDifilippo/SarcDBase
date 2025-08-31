@@ -140,7 +140,7 @@ for input_file_path in input_files:
                         'chrom': chrom if chrom is not None else '.',
                         'pos': pos if pos is not None else '.',
                         'gene': matched_gene if matched_gene else '.',
-                        'mutation': matched_mutation if matched_mutation else '.',
+                        'possible_diagnosis': matched_mutation if matched_mutation else '.',
                         'ID': fields[header.index('ID')] if 'ID' in header else '.',
                         'REF': fields[header.index('REF')] if 'REF' in header else '.',
                         'ALT': fields[header.index('ALT')] if 'ALT' in header else '.',
