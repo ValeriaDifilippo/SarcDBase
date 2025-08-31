@@ -19,10 +19,14 @@ def transform_gene_fusion(input_file, annotation_file, output_file):
 
     # Match input gene fusions with annotations and create output
     matched_results = []
+    seen = set()  # Track duplicates
     for row in input_data:
         gene_fusion = row[0]
         if gene_fusion in annotation_data:
-            matched_results.append([gene_fusion, annotation_data[gene_fusion]])
+            result_tuple = (gene_fusion, annotation_data[gene_fusion])
+            if result_tuple not in seen:
+                matched_results.append([gene_fusion, annotation_data[gene_fusion]])
+                seen.add(result_tuple)
 
     # Write results to output file
     with open(output_file, 'w') as f:
@@ -51,6 +55,7 @@ def main():
     # Call the main function
     transform_gene_fusion(args.file, args.annotation, args.o)
     print(f"Output written to: {args.o}")
+
 
 if __name__ == "__main__":
     main()
