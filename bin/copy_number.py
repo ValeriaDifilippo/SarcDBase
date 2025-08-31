@@ -12,6 +12,9 @@ def main(files, annotations, output_file):
         annotation_list.append(annotation_data)
     annotation = pd.concat(annotation_list, ignore_index=True)
 
+    # Create a set of annotated genes for fast lookup
+    annotated_genes = set(annotation["gene"].unique())
+
     # Process each input file
     for file in files:
         # Extract sample ID from file name
@@ -20,16 +23,23 @@ def main(files, annotations, output_file):
         # Load the sample data
         sample = pd.read_csv(file, delimiter='\t', dtype=str)
         sample = sample[~sample["chromosome"].str.contains("MT|GL", na=False)]  # Exclude unwanted chromosomes
-        sample["color"] = "#636EFA"  # Default color
 
-        # Annotate the data
-        merged = pd.merge(sample, annotation[["gene", "color"]], how="left", on="gene")
-        merged["color"] = merged["color_y"].fillna("#636EFA")  # Fill missing annotations with default color
-        merged = merged.drop(columns=["color_x", "color_y"])  # Drop unused columns
+        # Function to assign colors based on presence of any annotated gene
+        def assign_color(genes):
+            if pd.isna(genes):
+                return "#636EFA"  # default blue
+            gene_list = [g.strip() for g in genes.split(",")]
+            for g in gene_list:
+                if g in annotated_genes:
+                    return "#EF553B"  # annotated → red
+            return "#636EFA"  # not annotated → blue
+
+        # Apply annotation coloring
+        sample["color"] = sample["gene"].apply(assign_color)
 
         # Save merged file as .txt
-        output_txt_path = output_file.replace(".jpeg", "_merged.txt")
-        merged.to_csv(output_txt_path, sep='\t', index=False)
+        output_txt_path = output_file.replace(".jpeg", f"_{sample_id}_merged.txt")
+        sample.to_csv(output_txt_path, sep='\t', index=False)
         print(f"Merged data saved for sample {sample_id} at {output_txt_path}")
 
         # List of chromosomes to plot (include custom names)
@@ -40,25 +50,27 @@ def main(files, annotations, output_file):
 
         # Plot each chromosome
         for i, chrom in enumerate(chromosomes, start=1):
-            chrom_data = merged.loc[merged["chromosome"] == chrom]
+            chrom_data = sample.loc[sample["chromosome"] == chrom]
             if chrom_data.empty:  # Skip if no data for the chromosome
                 continue
             plt.subplot(24, 1, i)
-            plt.scatter(chrom_data["start"].astype(float), chrom_data["log2"].astype(float), c=chrom_data["color"], s=1)
+            plt.scatter(chrom_data["start"].astype(float), chrom_data["log2"].astype(float),
+                        c=chrom_data["color"], s=1)
             plt.axhline(linewidth=1, color="b")
             plt.xlabel("start")
             plt.ylabel(f"{chrom}")
 
         # Save the figure directly to the output file path
-        plt.savefig(output_file, bbox_inches="tight")
+        output_img_path = output_file.replace(".jpeg", f"_{sample_id}.jpeg")
+        plt.savefig(output_img_path, bbox_inches="tight")
         plt.close()
-        print(f"Plot saved for sample {sample_id} at {output_file}")
+        print(f"Plot saved for sample {sample_id} at {output_img_path}")
 
 
 if __name__ == "__main__":
     # Set up the argument parser
     parser = argparse.ArgumentParser(
-        description="Process VCF files to match gene information and append details from a reference file."
+        description="Process genomic files to match gene information and highlight annotated genes."
     )
     parser.add_argument(
         '-file', nargs='+', required=True,
@@ -69,10 +81,10 @@ if __name__ == "__main__":
         help="Path to one or more annotation files with gene details."
     )
     parser.add_argument(
-        '-outfile', required=True, help="Output file for results (not a directory)."
+        '-outfile', required=True, help="Output file for results (use .jpeg extension)."
     )
     parser.add_argument(
-        '--version', action='version', version='GeneMatch v1.0.0'
+        '--version', action='version', version='GeneMatch v1.1.0'
     )
     args = parser.parse_args()
 
