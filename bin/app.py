@@ -34,9 +34,9 @@ def analysis():
 def analysis_overview():
     return render_template('analysis_overview.html')
 
-@app.route('/analysis/who')
-def analysis_who():
-    return render_template('analysis_who.html')
+@app.route('/analysis/genes')
+def analysis_genes():
+    return render_template('genes.html')
 
 @app.route('/visualization')
 def visualization():
@@ -85,5 +85,3 @@ if __name__ == '__main__':
     Timer(1, lambda: webbrowser.open_new(f"http://127.0.0.1:{port}/")).start()
 
     app.run(debug=True, use_reloader=False, port=port)
-
-
