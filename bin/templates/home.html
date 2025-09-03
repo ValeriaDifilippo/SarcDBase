@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h2>Welcome to the Genetic Data Analysis App</h2>
-<p>This is the home page. Use the navigation menu to explore different sections of the app.</p>
+<div style="margin-left: 40px; padding: 20px;">
+    <h2> Welcome to SarcDBase : the Genetic Data Analysis App </h2>
+    <p> This is the home page. Use the navigation menu to explore different sections of the app.</p>
+    
+    <!-- Example image in Flask -->
+    <img src="{{ url_for('static', filename='images/Figure1.jpg') }}" 
+         alt="Genetic Data" 
+         style="max-width: 1300px; margin-top: 20px; border-radius: 8px;">
+</div>
 {% endblock %}
