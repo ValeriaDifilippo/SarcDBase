@@ -132,12 +132,22 @@ Example cn.txt file format that is handled by the script - chromosomes should be
 			
 
 ```
-python3 path/to/SarcDBase/bin/copy_number.py -file path/to/${sample}.txt -annotation path/to/SarcDBase/annotation_files/WHO_annotation_list.txt -outfile path/to/SarcDBase/results/$sample/${sample}_cn.jpeg
+python3 /path/to/copy_number.py \
+-file /path/to/sample_name.txt \
+-annotation /path/to/annotation_files/your_annotation_file.txt \
+-outfile /path/to/sample_name_cn.jpeg
 ```
 The script below utilizes a for loop to provide correct sample names, modify as needed.
 
 ```
-for file in /path/to/*cn.txt; do sample=$(basename "$file" | sed 's/_cn.txt$//'); echo "generating copy number plot for $sample"; python /path/to/SarcDBase-1.0.0/bin/copy_number.py -file $file -annotation /path/to/SarcDBase-1.0.0/annotation_files/WHO_annotation_list_hg38.txt -outfile /path/to/SarcDBase-1.0.0/results/$sample/${sample}_cn.jpeg; done
+for file in /path/to/*cn.txt; do
+    sample=$(basename "$file" | sed 's/_cn.txt$//')
+    echo "generating copy number plot for $sample"
+    python3 /path/to/copy_number.py \
+        -file "$file" \
+        -annotation /path/to/annotation_files/WHO_annotation_list_hg38.txt \
+        -outfile /path/to/results/${sample}_cn.jpeg
+done
 ```
 
 ***Fusion genes module***
