@@ -57,7 +57,7 @@ def generate_report(data_folder, output_file):
         else:
             image_html = f'<div><h2>No Copy Number Data Found for Case {sample}</h2></div>'
 
-        # HTML template (About section removed)
+        # HTML template (Notes section removed)
         html_content = f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -96,10 +96,6 @@ def generate_report(data_folder, output_file):
                 table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
                 table, th, td {{ border: 1px solid #ccc; padding: 8px; }}
                 th {{ background-color: #f2f2f2; }}
-                .notes-section {{ margin-top: 40px; }}
-                textarea {{ width: 100%; height: 150px; }}
-                button {{ margin-top: 10px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }}
-                button:hover {{ background-color: #45a049; }}
             </style>
         </head>
         <body>
@@ -107,7 +103,6 @@ def generate_report(data_folder, output_file):
                 <div class="sidebar">
                     <h2>Menu</h2>
                     <a href="#information">Case Information</a>
-                    <a href="#notes">Notes</a>
                     <a href="#sv">Structural Variants (SV)</a>
                     <a href="#snv">Single Nucleotide Variants (SNV)</a>
                     <a href="#fusion">Fusion Genes (RNA-seq)</a>

@@ -85,3 +85,5 @@ if __name__ == '__main__':
     Timer(1, lambda: webbrowser.open_new(f"http://127.0.0.1:{port}/")).start()
 
     app.run(debug=True, use_reloader=False, port=port)
+
+

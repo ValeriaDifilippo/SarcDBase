@@ -12,7 +12,7 @@ import datetime
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Dash app creation for the analysis_who page
+# Dash app creation for the analysis_genes page
 def parse_contents(contents, filename):
     content_type, content_string = contents.split(',')
     decoded = base64.b64decode(content_string)
@@ -53,7 +53,7 @@ def create_dash_table(df):
     ])
 
 def create_dash_analysis_who(flask_app):
-    dash_app = Dash(__name__, server=flask_app, url_base_pathname='/analysis_who/')
+    dash_app = Dash(__name__, server=flask_app, url_base_pathname='/analysis/genes/')
     dash_app.layout = html.Div([
         dcc.Upload(
             id='upload-data-sv',

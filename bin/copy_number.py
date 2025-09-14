@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")  # important for servers/headless
 import matplotlib.pyplot as plt
 import argparse
 
@@ -17,14 +19,23 @@ def main(files, annotations, output_file):
 
     # Process each input file
     for file in files:
-        # Extract sample ID from file name
+        # Extract sample ID from file name (without extension)
         sample_id = os.path.splitext(os.path.basename(file))[0]
 
         # Load the sample data
         sample = pd.read_csv(file, delimiter='\t', dtype=str)
-        sample = sample[~sample["chromosome"].str.contains("MT|GL", na=False)]  # Exclude unwanted chromosomes
+        # Exclude unwanted chromosomes
+        sample = sample[~sample["chromosome"].str.contains("MT|GL", na=False)]
 
-        # Function to assign colors based on presence of any annotated gene
+        # Normalize chromosome naming (strip "chr" if present)
+        sample["chromosome"] = sample["chromosome"].str.replace("^chr", "", regex=True)
+
+        # Convert numeric columns
+        sample["start"] = pd.to_numeric(sample["start"], errors="coerce")
+        sample["log2"] = pd.to_numeric(sample["log2"], errors="coerce")
+        sample = sample.dropna(subset=["start", "log2"])
+
+        # Function to assign colors based on annotation
         def assign_color(genes):
             if pd.isna(genes):
                 return "#636EFA"  # default blue
@@ -34,41 +45,43 @@ def main(files, annotations, output_file):
                     return "#EF553B"  # annotated → red
             return "#636EFA"  # not annotated → blue
 
-        # Apply annotation coloring
         sample["color"] = sample["gene"].apply(assign_color)
 
         # Save merged file as .txt
-        output_txt_path = output_file.replace(".jpeg", f"_{sample_id}_merged.txt")
+        output_txt_path = output_file.replace(".jpeg", "_merged.txt")
         sample.to_csv(output_txt_path, sep='\t', index=False)
         print(f"Merged data saved for sample {sample_id} at {output_txt_path}")
 
-        # List of chromosomes to plot (include custom names)
+        # List of chromosomes (numbers + X, Y)
         chromosomes = [str(i) for i in range(1, 23)] + ["X", "Y"]
 
-        # Create a figure
-        plt.figure(figsize=(30, 80))
+        # Create figure
+        plt.figure(figsize=(15, 50))  # smaller than before, still large
 
         # Plot each chromosome
         for i, chrom in enumerate(chromosomes, start=1):
             chrom_data = sample.loc[sample["chromosome"] == chrom]
-            if chrom_data.empty:  # Skip if no data for the chromosome
+            if chrom_data.empty:
                 continue
             plt.subplot(24, 1, i)
-            plt.scatter(chrom_data["start"].astype(float), chrom_data["log2"].astype(float),
-                        c=chrom_data["color"], s=1)
-            plt.axhline(linewidth=1, color="b")
-            plt.xlabel("start")
-            plt.ylabel(f"{chrom}")
+            plt.scatter(
+                chrom_data["start"],
+                chrom_data["log2"],
+                c=chrom_data["color"],
+                s=5
+            )
+            plt.axhline(y=0, linewidth=1, color="black")
+            plt.xlabel("Genomic position")
+            plt.ylabel(f"Chr {chrom}")
 
-        # Save the figure directly to the output file path
-        output_img_path = output_file.replace(".jpeg", f"_{sample_id}.jpeg")
-        plt.savefig(output_img_path, bbox_inches="tight")
+        # Save figure to the exact output path
+        plt.tight_layout()
+        plt.savefig(output_file, bbox_inches="tight")
         plt.close()
-        print(f"Plot saved for sample {sample_id} at {output_img_path}")
+        print(f"Plot saved for sample {sample_id} at {output_file}")
 
 
 if __name__ == "__main__":
-    # Set up the argument parser
     parser = argparse.ArgumentParser(
         description="Process genomic files to match gene information and highlight annotated genes."
     )
@@ -84,7 +97,7 @@ if __name__ == "__main__":
         '-outfile', required=True, help="Output file for results (use .jpeg extension)."
     )
     parser.add_argument(
-        '--version', action='version', version='GeneMatch v1.1.0'
+        '--version', action='version', version='GeneMatch v1.2.0'
     )
     args = parser.parse_args()
 
@@ -96,5 +109,5 @@ if __name__ == "__main__":
         else:
             input_files.append(f)
 
-    # Call the main function with parsed arguments
+    # Run
     main(input_files, args.annotation, args.outfile)
