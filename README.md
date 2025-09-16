@@ -180,7 +180,7 @@ python3 path/to/SarcDBase/bin/report.py -file path/to/sample/ -o path/to/SarcDBa
 The script below utilizes a for loop to provide correct sample names, modify as needed.
 
 ```
-for case in /path/to/SarcDBase-1.0.0/results/*; do sample=$(echo $case | cut -d "/" -f4); echo "generating report for $sample"; python /path/to/SarcDBase-1.0.0/bin/report.py -file $case/ -o /path/to/SarcDBase-1.0.0/results/$sample/${sample}_report.html; done
+for case in /path/to/SarcDBase-1.0.0/results/*; do sample=$(basename $case); echo "generating report for $sample"; python /path/to/SarcDBase-1.0.0/bin/report.py -file $case/ -o /path/to/SarcDBase-1.0.0/results/$sample/${sample}_report.html; done
 ```
 
 **Visualization app**
