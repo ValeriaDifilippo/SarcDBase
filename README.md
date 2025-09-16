@@ -140,13 +140,13 @@ python3 /path/to/copy_number.py \
 The script below utilizes a for loop to provide correct sample names, modify as needed.
 
 ```
-for file in /path/to/*cn.txt; do
-    sample=$(basename "$file" | sed 's/_cn.txt$//')
-    echo "generating copy number plot for $sample"
+for file in /path/to/*_cn.txt; do
+    sample=$(basename "$file" | sed 's/_cn.txt$//'); \
+    echo "generating copy number plot for $sample"; \
     python3 /path/to/copy_number.py \
         -file "$file" \
         -annotation /path/to/annotation_files/WHO_annotation_list_hg38.txt \
-        -outfile /path/to/results/${sample}_cn.jpeg
+        -outfile /path/to/results/${sample}_cn.jpeg; \
 done
 ```
 
@@ -163,12 +163,12 @@ Example fusions.txt file format that is handled by the script - you need to extr
 
 
 ```
-python3 path/to/SarcDBase/bin/funsion.py -file path/to/${sample}.txt -annotation path/to/SarcDBase/annotation_files/mitelman_databse.txt -o path/to/SarcDBase/results/$sample/${sample}_fusion.txt
+python3 path/to/SarcDBase/bin/gene_fusions.py -file path/to/${sample}.txt -annotation path/to/SarcDBase/annotation_files/mitelman_databse.txt -o path/to/SarcDBase/results/$sample/${sample}_fusion.txt
 ```
 The script below utilizes a for loop to provide correct sample names, modify as needed.
 
 ```
-for file in /path/to/*fusions.txt; do sample=$(basename "$file" | sed 's/_fusions.txt$//'); echo "matching fusions for $sample"; python /path/to/SarcDBase-1.0.0/bin/funsion.py -file $file -annotation /path/to/SarcDBase-1.0.0/annotation_files/mitelman_databse.txt -o /path/to/SarcDBase-1.0.0/results/$sample/${sample}_fusion.txt; done
+for file in /path/to/*fusions.txt; do sample=$(basename "$file" | sed 's/_fusions.txt$//'); echo "matching fusions for $sample"; python /path/to/SarcDBase-1.0.0/bin/gene_fusions.py -file $file -annotation /path/to/SarcDBase-1.0.0/annotation_files/mitelman_databse.txt -o /path/to/SarcDBase-1.0.0/results/$sample/${sample}_fusion.txt; done
 ```
 
 ***Report module***
