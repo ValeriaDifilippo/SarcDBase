@@ -4,10 +4,7 @@ SarcDBase (the Sarcoma Data Base) is a tool that integrates high-throughput sequ
 
 ## Rationale
 
-maybe add the figure 1 from the paper here (the workflow)
-
 SarcDBase facilitates the filtering of annotated mutational data for whole-genome and transcriptome sequencing against lists of clinically relevant mutations (for instance: genes mentioned in the WHO Classification of tumours). Users may define their own lists of interesting genes/fusions to simplify sifting through new data.
-
 
 ## Getting Started
 
@@ -76,8 +73,8 @@ Example of the cohort.txt
 
 | Sample | Sex | Age | Location |
 | --- | --- | --- | --- |
-| Case1 | Woman | 20 | Bone |
-| Case2 | Woman | 14 | Soft tissue |		
+| Case1 | Female | 20 | Bone |
+| Case2 | Female | 14 | Soft tissue |		
 
 Then run to create a folder and a *_case_information.txt file for each case in the list:
 ```
@@ -90,7 +87,7 @@ python set_up.py -file cohort.txt -output results -filter Case1 Case3
 The default for -filter is ALL, meaning that all the cases reported in the list are analyzed, otherwise you can specify the certain cases. A folder and a *_case_information.txt will be created only for those.
 
 *** IMPORTANT TO KEEP IN MIND FOR NEXT STEPS!! ***
-- All vcf files (snv/indels, sv, etc...)  that are to be analyzed need to be uniformly named starting with the case number as present in the cohort list (for instance: Case1_sv.vcf, Case1_snv.vcf, Case1_cn.vcf, Case1_fusions.txt)!
+- All vcf files or other output files (snv/indels, sv, etc...) that are to be analyzed need to be uniformly named starting with the case number as present in the cohort list (for instance: Case1_sv.vcf, Case1_snv.vcf, Case1_cn.txt, Case1_fusions.txt)!
 - All SarcDBase output files created for each case will be to be saved in the folder relative for that case.
 
 ***Structural variants (SVs) module***
@@ -121,7 +118,9 @@ for file in /path/to/*_snv.vcf; do sample=$(basename "$file" | sed 's/_snv.vcf$/
 
 ***Copy number variations (CNVs) module***
 
-This step creates one copy number variantion plot of all chromosomes (1-22, X and Y) in .jpeg format and a .txt file that can be used to dynamically visualize the copy number profile in the SarcDBase app. As input, it uses tab-delimited files in .txt format containing only the columns as exemplified below. It is recommended to export these specific columns from the output of the copy number caller that you are using and save as Case1_cn.txt 
+This step creates one large copy number variantion plot of all chromosomes (1-22, X and Y) in .jpeg format and a .txt file that can be used to dynamically visualize the copy number profile in the SarcDBase app. As input, it uses tab-delimited files in .txt format containing only the columns as exemplified below. It is recommended to export these specific columns from the output of the copy number caller that you are using and save as Case1_cn.txt etc...
+
+Copy number bins containing genes present in the annotation list will be colored in red for ease of detection while visualizing the plots either in the html report or the SarcDBase app.
 
 Example cn.txt file format that is handled by the script - chromosomes should be given as 1, 2, 3 and NOT chr1, chr2, chr3:
 
@@ -152,7 +151,7 @@ done
 
 ***Fusion genes module***
 
-This step matches the output of a fusion gene caller all reported gene fusions in the latest release of the Mitelman database (https://mitelmandatabase.isb-cgc.org/)
+This step matches the output of a fusion gene caller with all reported gene fusions in the latest release of the Mitelman database (https://mitelmandatabase.isb-cgc.org/). Up-to-date data can be retreived directly from the Mitleman database.
 
 Example fusions.txt file format that is handled by the script - you need to extract gene fusions from your caller of choice and provide them in this format with one column only:
 
@@ -173,7 +172,7 @@ for file in /path/to/*fusions.txt; do sample=$(basename "$file" | sed 's/_fusion
 
 ***Report module***
 
-If you wish you can create an html report containing all the information generated for a spefic case, run the following:
+If you wish to create an html report containing all the information generated for a spefic case, run the following:
 
 ```
 python3 path/to/SarcDBase/bin/report.py -file path/to/sample/ -o path/to/SarcDBase/results/sample/sample_report.html
