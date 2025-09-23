@@ -35,9 +35,10 @@ def create_dash_copy_number(flask_app):
         html.Div([
             html.H2("How this page works:", style={'textAlign': 'center', 'margin-bottom': '10px'}),
             html.Ul([
-                html.Li(" Upload the file"),
-                html.Li(" Generate the plot"),
-                html.Li(" Analyse")
+                html.Li(" Upload the desired *_cn_merged.txt file by clicking Select File."),
+                html.Li(" Choose a chromosome"),
+                html.Li(" Click on Generate Plot."),
+                html.Li(" Change the selected chromosome and click Generate Plot again to plot a different chromosome.")
             ], style={'fontSize': '18px', 'lineHeight': '1.6', 'listStyleType': 'decimal', 'margin': '0', 'padding': '0 20px'})
         ], style={'padding': '20px', 'backgroundColor': '#f0f5f9', 'borderRadius': '5px', 'boxShadow': '0px 4px 6px rgba(0, 0, 0, 0.1)', 'margin-bottom': '20px'}),
         
@@ -46,7 +47,7 @@ def create_dash_copy_number(flask_app):
             dcc.Upload(
                 id='upload-data-cn',
                 children=html.Div([
-                    html.H4('Select Files', style={'color': 'white', 'margin': '0', 'lineHeight': '60px'})
+                    html.H4('Select File', style={'color': 'white', 'margin': '0', 'lineHeight': '60px'})
                 ]),
                 style={
                     'width': '200px',  # Smaller width
