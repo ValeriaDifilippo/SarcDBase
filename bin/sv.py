@@ -108,7 +108,7 @@ for input_file_path in input_files:
 
             fieldnames = [
                 'Chrom1', 'Pos1', 'Chrom2', 'Pos2',
-                'Gene_break1', 'Mutation_break1', 'Gene_break2', 'Mutation_break2',
+                'Gene_break1', 'Possible_diagnosis_gene1', 'Gene_break2', 'Possible_diagnosis_gene2',
                 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'
             ] + dynamic_columns
             writer = csv.DictWriter(output_file, fieldnames=fieldnames, delimiter='\t')
@@ -147,7 +147,7 @@ for input_file_path in input_files:
                     pos2 = None
 
                     if alt_column:
-                        m = re.search(r'chr([0-9XYM]+):(\d+)', alt_column)
+                        m = re.search(r'([0-9XYM]+):(\d+)', alt_column)
                         if m:
                             chromosome2 = "chr" + m.group(1) if not m.group(1).startswith("chr") else m.group(1)
                             pos2 = int(m.group(2))
@@ -172,9 +172,9 @@ for input_file_path in input_files:
                         'Chrom2': chromosome2 if chromosome2 else '.',
                         'Pos2': pos2 if pos2 else '.',
                         'Gene_break1': gene_break1 if gene_break1 else '.',
-                        'Mutation_break1': mutation_break1 if mutation_break1 else '.',
+                        'Possible_diagnosis_gene1': mutation_break1 if mutation_break1 else '.',
                         'Gene_break2': gene_break2 if gene_break2 else '.',
-                        'Mutation_break2': mutation_break2 if mutation_break2 else '.',
+                        'Possible_diagnosis_gene2': mutation_break2 if mutation_break2 else '.',
                         'ID': fields[column_indices['ID']] if 'ID' in column_indices and fields[column_indices['ID']] else '.',
                         'REF': fields[column_indices['REF']] if 'REF' in column_indices and fields[column_indices['REF']] else '.',
                         'ALT': alt_column if alt_column else '.',
