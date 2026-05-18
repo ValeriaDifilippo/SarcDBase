@@ -192,5 +192,11 @@ python /path/to/SarcDBase/bin/app.py
 
 ## Citation
 
-If you use SarcDBase please cite .... future paper
-and the link for Mitelman
+If you use SarcDBase please cite 
+Genetic profiling of soft tissue and bone tumors using SarcDBase
+Valeria Difilippo, Karim H Saba, Karin Wallander, Emelie Styring, Michalea Nathrath, Daniel Baumoer, Felix Haglund de Flon, Karolin H Nord
+bioRxiv 2026.05.13.724790; doi: https://doi.org/10.64898/2026.05.13.724790
+
+ Mitelman Database of Chromosome Aberrations and Gene Fusions in Cancer
+(2025). Mitelman F, Johansson B and Mertens F (Eds.),
+https://mitelmandatabase.isb-cgc.org
